@@ -4,32 +4,16 @@
     // 자세한 내용을 보려면 https://go.microsoft.com/fwlink/?linkid=830387을(를) 방문하세요.
     "version": "0.2.0",
     "configurations": [
+        
+       
         {
             "type": "java",
-            "name": "Debug (Launch) - Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-MavenWrapperDownloader",
-            "request": "launch",
-            "mainClass": "MavenWrapperDownloader"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-DemoApplication",
-            "request": "launch",
-            "mainClass": "com.wapp.community.DemoApplication"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-DemoApplication<community>",
+            "name": "Spring Boot-WepApplication<webproject>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
-            "mainClass": "com.wapp.community.DemoApplication",
-            "projectName": "community",
+            "mainClass": "com.springboot1.webproject.WepApplication",
+            "projectName": "webproject",
             "args": ""
         }
     ]

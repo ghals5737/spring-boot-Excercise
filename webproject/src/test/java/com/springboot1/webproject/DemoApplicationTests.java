@@ -1,4 +1,4 @@
-package com.wapp.community;
+package com.springboot1.webproject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
