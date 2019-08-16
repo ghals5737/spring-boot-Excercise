@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CodeClassServiceImpl implements CodeClassService {
-    //@Autowired
-   // private CodeClassMapper mapper;
+    @Autowired
+    private CodeClassMapper mapper;
 
     @Override
     public void register(CodeClass codeClass) throws Exception {
-
+          mapper.create(codeClass);
     }
 
     @Override
@@ -35,6 +35,6 @@ public class CodeClassServiceImpl implements CodeClassService {
 
     @Override
 	public List<CodeClass> list() throws Exception {
-		return null;
+		return mapper.list();
 	}
 }
