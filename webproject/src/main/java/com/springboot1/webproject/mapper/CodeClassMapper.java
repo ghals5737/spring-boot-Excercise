@@ -10,4 +10,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface CodeClassMapper {
     public void create(CodeClass codeClass)throws Exception;
     public List<CodeClass> list()throws Exception;
+    public CodeClass read(String classCode)throws Exception;
 }

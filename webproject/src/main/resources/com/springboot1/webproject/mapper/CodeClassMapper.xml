@@ -27,4 +27,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          ORDER BY class_code DESC,
            reg_date DESC  
      </select>
+
+     <select id="read" resultType="CodeClass">
+         SELECT class_code,
+           class_name,
+           use_yn,
+           reg_date
+         FROM code_class
+         WHERE class_code=#{classCode}
+     </select>
   </mapper>

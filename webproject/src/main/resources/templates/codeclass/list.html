@@ -32,11 +32,11 @@
 			
 	</table>
 	
-	<script th:inline="javascript">
-		var result ='${msg}';
-	
+	<script type=text/javascript>
+		var result ='[[${msg}]]';
+	    console.log(result);
 		if (result === "SUCCESS") {
-			alert("dwa");
+			alert("등록성공");
 		}
 	</script>
 </div>

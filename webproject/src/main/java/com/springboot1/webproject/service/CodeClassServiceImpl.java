@@ -20,7 +20,7 @@ public class CodeClassServiceImpl implements CodeClassService {
 
     @Override
     public CodeClass read(String classCode) throws Exception {
-        return null;
+        return mapper.read(classCode);
     }
 
     @Override

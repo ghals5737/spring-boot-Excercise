@@ -37,4 +37,14 @@ public class CodeClassController{
     public void list(Model model)throws Exception{
         model.addAttribute("list", service.list());
     }
+
+    @RequestMapping(value="/read",method=RequestMethod.GET)
+    public void read(String classCode,Model model)throws Exception{
+        model.addAttribute(service.read(classCode));
+    }
+
+    @RequestMapping(value = "/modify",method=RequestMethod.GET)
+    public void modifyForm(String classCode,Model model)throws Exception{
+           model.addAttribute(service.read(classCode)); 
+    }
 }
