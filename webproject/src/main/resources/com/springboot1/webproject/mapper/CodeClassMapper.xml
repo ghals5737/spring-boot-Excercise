@@ -36,4 +36,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          FROM code_class
          WHERE class_code=#{classCode}
      </select>
+
+     <update id="update">
+         UPDATE code_class
+         SET class_name=#{className}
+         WHERE class_code=#{classCode}
+     </update>
+
+     <delete id="delete">
+         DELETE FROM code_class
+         WHERE class_code=#{classCode}
+     </delete>
   </mapper>
