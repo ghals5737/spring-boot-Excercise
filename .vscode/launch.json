@@ -31,6 +31,16 @@
             "mainClass": "com.web.DemoApplication",
             "projectName": "web",
             "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-DemoApplication<webproject>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.webproject.DemoApplication",
+            "projectName": "webproject",
+            "args": ""
         }
     ]
 }

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>KUBG</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+  
+    <title>Simple Sidebar - Start Bootstrap Template</title>
+  
+    <!-- Bootstrap core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  
+    <!-- Custom styles for this template -->
+    <link href="/css/simple-sidebar.css" rel="stylesheet">
+      
+  <!-- Bootstrap core JavaScript -->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <style type="text/css">   
+    a:visited { color: black; text-decoration: none;}
+    a:hover { color:  black; text-decoration: none;}
+   </style>
+   
+   
+  
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+
+        <!-- Sidebar -->
+        <div th:include="fragments/aside :: commonAside"></div>
+        <!-- /#sidebar-wrapper -->
+    
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+    
+          <div th:include="fragments/nav :: commonNav"></div>
+    
+          <div class="container-fluid" style="margin-top: 30px;">
+           
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                    <th scope="cols">조회수</th>
+                    <th scope="cols">제목</th>
+                    <th scope="cols">작성자</th>
+                    <th scope="cols">작성일자</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="board:${board}">
+                      <td th:text="${board.viewCnt}"></td>
+                      <td><a th:href="@{/board/read(bno=${board.bno})}"  th:text="${board.title}"></a></td>
+                      <td th:text="${board.writer}"></td>
+                      <td th:text="${#calendars.format(board.regDate,'yyyy-MM-dd')}"></td>
+                  </tr>
+               
+                </tbody>
+            </table>
+            <div class="text-center">
+              <ul class="pagination justify-content-center" style="margin-right: 200px;">
+              <th:block th:if="${pageMaker.prev==1}">
+                <li class="page-item"><a class="page-link" th:href="@{/board/list(n=${pageMaker.startPage-1})}">&laquo;</a></li>
+              </th:block>
+              <th:block th:each="i : ${#numbers.sequence( pageMaker.startPage,pageMaker.endPage)}">
+                <li class="page-item"><a class="page-link" th:href="@{/board/list(n=${i})}" th:text="${i}"></a></li>
+              </th:block>            
+              <th:block th:if="${pageMaker.next}==1">
+                <li class="page-item"><a class="page-link" th:href="@{/board/list(n=${pageMaker.endPage+1})}">&raquo;</a></li>
+              </th:block> 
+              </ul>         
+              <th:block th:if="${session.user!=null}" >               
+                  <a href="/board/write" class="btn btn-primary" role="button">글쓰기</a>
+              </th:block>           
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    
+      </div>
+      <!-- /#wrapper -->
+    
+      <!-- Menu Toggle Script -->
+      <script>
+        $("#menu-toggle").click(function(e) {
+          e.preventDefault();
+          $("#wrapper").toggleClass("toggled");
+        });
+      </script>
+    </div>
+</body>
+</html>

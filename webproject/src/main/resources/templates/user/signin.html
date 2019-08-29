@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>KUBG</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+  
+    <title>Simple Sidebar - Start Bootstrap Template</title>
+  
+    <!-- Bootstrap core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  
+    <!-- Custom styles for this template -->
+    <link href="/css/simple-sidebar.css" rel="stylesheet">
+      
+  <!-- Bootstrap core JavaScript -->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+
+        <!-- Sidebar -->
+        <div th:include="fragments/aside :: commonAside"></div>
+        <!-- /#sidebar-wrapper -->
+    
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+    
+          <div th:include="fragments/nav :: commonNav"></div>
+    
+          <div class="container-fluid" style="margin-top: 30px;">
+              <form role="form" method="post" autocomplete="off" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">아이디</label>
+                        <div class="col-sm-3">
+                        <input type="email" class="form-control" name="userId" id="inputEmail3" placeholder="example@email.com" required="required" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-2 control-label">비밀번호</label>
+                        <div class="col-sm-3">
+                        <input type="password" class="form-control" name="userPass" id="inputPassword3" placeholder="Password">
+                        </div>
+                    </div>                
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">로그인</button>
+                    </div>
+                    <div th:if="${msg == false}">
+                        <label class="col-sm-2 control-label">로그인에 실패했습니다.</label>
+                    </div>
+                    </div>
+                </form>
+          </div>
+
+        </div>
+        <!-- /#page-content-wrapper -->
+    
+      </div>
+      <!-- /#wrapper -->
+    
+      <!-- Menu Toggle Script -->
+      <script>
+        $("#menu-toggle").click(function(e) {
+          e.preventDefault();
+          $("#wrapper").toggleClass("toggled");
+        });
+      </script>
+    </div>
+</body>
+</html>

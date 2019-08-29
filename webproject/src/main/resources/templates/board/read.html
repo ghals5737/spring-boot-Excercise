@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>KUBG</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+  
+    <title>Simple Sidebar - Start Bootstrap Template</title>
+  
+    <!-- Bootstrap core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  
+    <!-- Custom styles for this template -->
+    <link href="/css/simple-sidebar.css" rel="stylesheet">
+      
+  <!-- Bootstrap core JavaScript -->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <style type="text/css">   
+    a:visited { color: black; text-decoration: none;}
+    a:hover { color:  black; text-decoration: none;}
+   </style>
+  <style>
+      div.replyModal { position:relative; z-index:1; display: none; }
+      div.modalBackground { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0, 0, 0, 0.8); z-index:-1; }
+      div.modalContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:250px; padding:20px 10px; background:#fff; border:2px solid #666; }
+      div.modalContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:500px; height:200px; }
+      div.modalContent button { font-size:20px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
+      div.modalContent button.modal_cancel { margin-left:20px; }
+     </style>               
+  <script> 
+           
+        function replyList(){
+          let bno ='[[${board.bno}]]';
+          let writer='[[${board.writer}]]';
+          console.log(writer);
+          let user='[[${session.user}]]';
+          const userName=$("#userName").val();
+          console.log(user);
+          console.log(userName);
+          $.getJSON("/board/replyList" + "?n=" + bno, function(data){
+                let str = "";
+                console.log(data);
+                $(data).each(function(){
+                
+                    console.log(data);
+                    
+                    let regDate = new Date(this.regDate);
+                    regDate = regDate.toLocaleDateString("ko-US")
+                    
+                    str += "<div style='margin-top:15px;' data-bno='" + this.bno + "'>"
+                        + "<li class='list-group-item  list-group-item-secondary' id='userinfo'>"
+                        + "<span class='userName col-sm-9'>" + this.userName + "</span>"                     
+                        + "<span class='date col-sm-3'>" + regDate + "</span>"
+                        if(user===""||userName!==this.userName){
+                        str+="</li>"
+                             + "<li class='list-group-item' id='replyContent'>" + this.content+"</li>"
+                             + "</div>";             
+                            
+                        }else{
+                            str+= "<button type='button' id='modify' class='btn btn-warning btn-sm' data-rno='" + this.rno + "'>수정</button>"
+                                + "<button type='button' id='delete' class='btn btn-danger btn-sm' data-rno='" + this.rno + "'>삭제</button>"                           
+                                + "</li>"
+                                + "<li class='list-group-item' id='replyContent'>" + this.content+"</li>" 
+                                + "</div>";                               
+                        }                                           
+                                                          
+                });
+          
+                $("section.replyList ul").html(str);
+          });
+        }
+      
+  </script>
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+
+        <!-- Sidebar -->
+        <div th:include="fragments/aside :: commonAside"></div>
+        <!-- /#sidebar-wrapper -->
+    
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+    
+          <div th:include="fragments/nav :: commonNav"></div>
+    
+          <div class="container-fluid" style="margin-top: 30px;">
+            <div class="col-lg-8">
+              <th:block th:if="${session.user!=null}">
+                <input type="hidden"  th:value="${session.user.userName}" id="userName">
+              </th:block>
+             <form role="form" method="post" autocomplete="off">
+               
+              <!-- Title -->
+              <h1 class="mt-4" th:text="${board.title}"></h1>
+              <input type="hidden" name="bno" th:value="${board.bno}">              
+              <!-- Author -->
+              <span th:text="${board.writer}+'님'"></span>
+              <span class="col-md-5" th:text="${#calendars.format(board.regDate,'yyyy-MM-dd')}"></span>
+              <hr>        
+                <p class="lead" th:utext="${board.content}"></p>                    
+              <hr>
+              <th:block th:if="${session.user!=null}">                
+                <div th:if="${#strings.equals(session.user.userName,board.writer)}">                                   
+                  <button type="button" id="modify_Btn" class="btn btn-warning">수정</button>
+                  <button type="button" id="delete_Btn" class="btn btn-danger">삭제</button> 
+                </div>
+              </th:block>
+            </form>
+              <!-- Comments Form -->
+              <section class="replyList">
+                    <ul class="list-group" style="margin-top: 20px;">
+                      <!--<li th:each="reply:${reply}">
+                          <div class="userInfo">
+                              <span class="userName" th:text="${reply.userName}"></span>
+                              <span class="date" th:text="${#calendars.format(reply.repDate,'yyyy-MM-dd')}"></span>
+                          </div>
+                          <div class="replyContent" th:text="${reply.repCon}"></div>
+                      </li>-->
+                 
+                    </ul>
+                  <script>
+                     replyList();
+                  </script>
+              </section>
+              <p th:if="${session.user==null}">소감을 남기시려면<a href="/user/signin">로그인</a>해주세요</p>
+              <th:block th:if="${session.user!=null}">
+              <div class="card my-4">
+                 
+               
+                <section  class="replyForm">
+                  <h5 class="card-header">Leave a Comment:</h5>
+                  <div class="card-body">
+                    <form role="form" method="post" autocomplete="off">
+                      <input type="hidden" name="bno" id="bno" th:value="${board.bno}">
+                      <input type="hidden" name="userName" id="userName" th:value="${session.user.userName}">
+                      <div class="form-group">
+                        <textarea class="form-control" rows="3" name="content" id="content"></textarea>
+                      </div>
+                      <button type="button" id="reply_btn" class="btn btn-primary">Submit</button>
+                    </form>
+                  </div>
+                </section>-
+              </div>
+            </th:block>
+          </div>
+
+        </div>
+        <!-- /#page-content-wrapper -->
+    
+      </div>
+      <!-- /#wrapper -->
+      <div class="replyModal">
+
+          <div class="modalContent">
+           
+           <div>
+            <textarea class="modal_content" name="modal_content"></textarea>
+           </div>
+           
+           <div>
+            <button type="button" class="modal_modify_btn">수정</button>
+            <button type="button" class="modal_cancel">취소</button>
+           </div>
+           
+          </div>
+         
+          <div class="modalBackground"></div>
+          
+        </div>
+      <!-- Menu Toggle Script -->
+      <script>
+        $("#menu-toggle").click(function(e) {
+          e.preventDefault();
+          $("#wrapper").toggleClass("toggled");
+        });
+      </script>
+      <script>
+          const formObj=$("form[role='form']");
+
+          $("#modify_Btn").click(function(){
+              formObj.attr("action","/board/modify");
+              formObj.attr("method","get");
+              formObj.submit();
+          });
+
+          $("#delete_Btn").click(function(){
+              const con=confirm("정말로 삭제하시겠습니까?");
+              if(con){
+                   formObj.attr("action","/board/delete");
+                   formObj.submit();
+              }               
+          });
+       </script>
+       <script>  
+          $("#reply_btn").click(function(){
+            const formObj = $(".replyForm form[role='form']");
+            const bno = $("#bno").val();
+            const content = $("#content").val();
+            const userName=$("#userName").val();
+            const data = {
+             bno : bno,
+             content : content,
+             userName : userName,
+             parent : 1
+             };
+           
+            $.ajax({
+              url : "/board/rpRegist",
+              type : "post",
+              data : data,
+              success : function(){
+                replyList();
+                $("#content").val("");
+              }
+            });
+          });
+       </script>
+       <script>
+          $(document).on("click", "#delete", function(){
+            let deleteConfirm=confirm("정말로 삭제하시겠습니까?");
+            if(deleteConfirm){
+                  const data = {
+                      rno : $(this).attr("data-rno")                            
+                  };
+                  
+                  $.ajax({
+                      url : "/board/deleteReply",
+                      type : "post",
+                      data : data,
+                      success : function(result){                          
+                              replyList();                                      
+                      }                     
+                  });
+            }
+          });
+  </script>
+  <script>
+      $(".modal_modify_btn").click(function(){
+              const modifyConfirm = confirm("정말로 수정하시겠습니까?");
+              console.log( $(this).attr("data-rno"));
+              if(modifyConfirm) {
+                  const data = {
+                      rno : $(this).attr("data-rno"),
+                      content : $(".modal_content").val()
+                  };  // ReplyVO 형태로 데이터 생성
+                  
+                  $.ajax({
+                      url : "/board/modifyReply",
+                      type : "post",
+                      data : data,
+                      success : function(){                       
+                        replyList();
+                        $(".replyModal").fadeOut(200);                        
+                      }
+                    
+                  });
+          }
+              
+      });
+      $(document).on("click", "#modify", function(){
+          $(".replyModal").fadeIn(200);
+          const rno = $(this).attr("data-rno");
+          const content = $(this).parent().parent().children(".replyContent").text();
+          
+          $(".modal_content").val(content);
+          $(".modal_modify_btn").attr("data-rno", rno);
+      });
+  </script>
+  <script>
+          $(".modal_cancel").click(function(){
+              $(".replyModal").fadeOut(200);
+          });
+  </script>
+    </div>
+</body>
+</html>

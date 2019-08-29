@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.webproject.mapper.BoardMapper">	
+
+    <select id="cateList" resultType="com.webproject.domain.BoardCategory">
+        select *
+        from board_category
+    </select>
+    <insert id="insertBoard">
+        insert into board
+        (
+            title,
+            content,
+            writer,
+            cateCode
+        )
+        values
+        (
+            #{title},
+            #{content},
+            #{writer},
+            #{cateCode}
+        )
+    </insert>
+     <select id="boardList" resultType="com.webproject.domain.Board">
+        select *
+        from board
+    </select>
+    <select id="getCnt" resultType="int">
+      select
+       count(bno)
+      from
+       board
+    </select>
+    <select id="listPage" resultType="com.webproject.domain.Board">
+       select 
+         bno,title,writer,regDate,viewCnt
+       from
+         board
+       limit
+         #{startNum},#{cnt}         
+    </select>
+    <select id="readPage"  resultType="com.webproject.domain.Board">
+       select 
+         title,writer,content,regDate,viewCnt
+       from 
+         board
+       where 
+         bno=#{bno}  
+    </select>
+    <update id="boardModify">
+	   update board
+	      set
+		   title=#{title},
+			 content=#{content},
+			 cateCode=#{cateCode}
+			
+       where bno=#{bno}
+	</update>
+  <delete id="boardDelete">
+      delete from board
+      where bno=#{bno}
+  </delete>
+  <select id="getRpCnt" resultType="int">
+      select
+       count(bno)
+      from
+       reply
+      where bno=#{bno}
+    </select>
+  <insert id="rpRegist">
+      insert into reply
+        (
+             bno,
+             content,
+             userName,
+             parent
+        )
+        values
+        (
+            #{bno},
+            #{content},
+            #{userName},
+            #{parent}
+        )
+  </insert>
+  <select id="replyList" resultType="com.webproject.domain.Reply">
+     select *
+     from reply
+     where bno=#{bno}
+     limit
+         #{startNum},#{cnt}
+  </select>
+    <update id="modifyReply">
+	   update reply
+	      set		  
+			 content=#{content}		 
+			
+       where rno=#{rno}
+	</update>
+  <delete id="deleteReply">
+     delete from reply
+     where rno=#{rno}
+  </delete>
+</mapper>
